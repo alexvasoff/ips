@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <chrono>
 #include <thread>
 #include <windows.h>
@@ -6,7 +6,6 @@
 # define M_PI 3.14159265358979323846
 
 using namespace std::chrono;
-
 
 double f(double x)
 {
@@ -18,8 +17,8 @@ double left(double low, double high, int n = 100) {
 	// high_resolution_clock::time_point t1 = high_resolution_clock::now();
 	const double h = (high - low) / n;
 	double rightPart = 0;
-//#pragma loop(hint_parallel(12))
-#pragma loop(no_vector)
+	//#pragma loop(hint_parallel(12))
+	// #pragma loop(no_vector)
 	for (int i = 0; i <= n - 1; i++) {
 		rightPart += f(low + h * i);
 	}
@@ -35,18 +34,17 @@ double right(double low, double high, int n = 100) {
 	// high_resolution_clock::time_point t1 = high_resolution_clock::now();
 	const double h = (high - low) / n;
 	double rightPart = 0;
-// #pragma loop(hint_parallel(12))
-#pragma loop(no_vector)
+	// #pragma loop(hint_parallel(12))
+	// #pragma loop(no_vector)
 	for (int i = 1; i <= n; i++) {
 		rightPart += f(low + h * i);
 	}
 	const double rez = h * rightPart;
 	// high_resolution_clock::time_point t2 = high_resolution_clock::now();
 	// duration<double> duration = (t2 - t1);
-    // std::cout << n << "        " << rez << "      " << duration.count() << "    " << ((M_PI - abs(M_PI - rez)) * 100) / M_PI << std::endl;
+	// std::cout << n << "        " << rez << "      " << duration.count() << "    " << ((M_PI - abs(M_PI - rez)) * 100) / M_PI << std::endl;
 	return rez;
 }
-
 
 int main()
 {
@@ -59,14 +57,14 @@ int main()
 	// std::cout << "method | intervals\\   result  \\   duration (s)  \\   accuracy (%)   \\\n";
 	high_resolution_clock::time_point g1 = high_resolution_clock::now();
 
-/* Parametrs Initialisation */
+	/* Parametrs Initialisation */
 	const double low = 0.5;
 	const double high = 1;
 	int n = 100;
 
-/* Calculations */
-//#pragma loop(hint_parallel(12))
-#pragma loop(no_vector)
+	/* Calculations */
+	//#pragma loop(hint_parallel(12))
+	//#pragma loop(no_vector)
 	while (n <= 1000000) {
 		// Thread
 		/*
@@ -75,13 +73,13 @@ int main()
 		lt.join();
 		rt.join();
 		*/
-		
+
 
 		// raw
-		
+
 		left(low, high, n);
 		right(low, high, n);
-		
+
 		n *= 10;
 	}
 	high_resolution_clock::time_point g2 = high_resolution_clock::now();
